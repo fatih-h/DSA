@@ -182,7 +182,10 @@ class QuickSort{
     The first two terms are for two recursive calls, the last term is for the partition process.
     k is the number of elements that are smaller than the pivot.
     */
-    int partition(int arr[], int low, int high){
+
+    // Hoare's Quicksort faster than Lamuto's Quicksort
+
+    int lamutosPartition(int arr[], int low, int high){
         //Pivot(pivot as last index)
         int pivot = arr[high];
         int i = low-1;
@@ -195,13 +198,138 @@ class QuickSort{
         Main.swap(arr, i+1, high);
         return(i+1);
     }
-    void sort(int arr[], int low, int high){
-        if(low < high){
-            int pi = partition(arr, low ,high);
+    int hoaresPartition(int arr[], int low, int high){
+        //Pivot(pivot as first index)
+        int pivot = arr[low];
+        int i = low-1, j = high+1;
+        while(true){
+            do{
+                i++;
+            }while(arr[i] < pivot);
 
-            sort(arr, low, pi-1);
-            sort(arr, pi+1, high);
+            do{
+                j--;
+            }while(arr[j] > pivot);
+
+            if(i>=j){
+                return j;
+            }
+            Main.swap(arr, i ,j);
+
         }
+    }
+
+    void lamutosSort(int arr[], int low, int high){
+        if(low < high){
+            int pi = lamutosPartition(arr, low ,high);
+
+            lamutosSort(arr, low, pi-1);
+            lamutosSort(arr, pi+1, high);
+        }
+    }
+    void hoaresSort(int arr[], int low, int high){
+        if(low < high){
+            int pi = lamutosPartition(arr, low ,high);
+
+            hoaresSort(arr, low, pi);
+            hoaresSort(arr, pi+1, high);
+        }
+    }
+
+    // 3-way partition based quick sort
+    static int i, j;
+
+    void partition(int a[], int l, int r)
+    {
+
+        i = l - 1; j = r;
+        int p = l - 1, q = r;
+        int v = a[r];
+
+        while (true)
+        {
+
+            // From left, find the first element greater than
+            // or equal to v. This loop will definitely
+            // terminate as v is last element
+            while (a[++i] < v)
+                ;
+
+            // From right, find the first element smaller than
+            // or equal to v
+            while (v < a[--j])
+                if (j == l)
+                    break;
+
+            // If i and j cross, then we are done
+            if (i >= j)
+                break;
+
+            // Swap, so that smaller goes on left greater goes
+            // on right
+            int temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+
+            // Move all same left occurrence of pivot to
+            // beginning of array and keep count using p
+            if (a[i] == v) {
+                p++;
+                temp = a[i];
+                a[i] = a[p];
+                a[p] = temp;
+
+            }
+
+            // Move all same right occurrence of pivot to end of
+            // array and keep count using q
+            if (a[j] == v) {
+                q--;
+                temp = a[q];
+                a[q] = a[j];
+                a[j] = temp;
+            }
+        }
+
+        // Move pivot element to its correct index
+        int temp = a[i];
+        a[i] = a[r];
+        a[r] = temp;
+
+        // Move all left same occurrences from beginning
+        // to adjacent to arr[i]
+        j = i - 1;
+        for (int k = l; k < p; k++, j--)
+        {
+            temp = a[k];
+            a[k] = a[j];
+            a[j] = temp;
+        }
+
+        // Move all right same occurrences from end
+        // to adjacent to arr[i]
+        i = i + 1;
+        for (int k = r - 1; k > q; k--, i++)
+        {
+            temp = a[i];
+            a[i] = a[k];
+            a[k] = temp;
+        }
+    }
+
+    // 3-way partition based quick sort
+    void sort(int a[], int l, int r) {
+        if (r <= l)
+            return;
+
+        i = 0; j = 0;
+
+        // Note that i and j are passed as reference
+        partition(a, l, r);
+
+        // Recur
+        sort(a, l, j);
+        sort(a, i, r);
     }
 }
 
@@ -246,14 +374,14 @@ public class Main {
         print(array, n);
          */
 
-        /*Quick Sort test case
+        /*Quick Sort test case*/
         int[] array = new int[]{4,3,12,65,32,6,5,23};
         int n = array.length;
         QuickSort qs = new QuickSort();
         print(array, n);
         qs.sort(array, 0, n-1);
         print(array, n);
-        */
+
 
 
     }
