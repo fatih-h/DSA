@@ -101,6 +101,37 @@ class InsertionSort{
     }
 }
 
+class MergeSort{
+    //Based on Divide and Conquer Paradigm
+    /*
+    Time Complexity: O(N log(N))
+    Auxiliary Space: O(n)
+    Merge Sort is a recursive algorithm and time complexity
+    can be expressed as following recurrence relation.
+    T(n) = 2T(n/2) + θ(n)
+    2T(n/2) corresponds to the time required to sort the sub-arrays,
+    and θ(n) is the time to merge the entire array.
+    */
+
+    //There are log N levels and in each level, we perform O(N) work
+    void sort(int arr[], int left, int right){
+        if(left < right){
+            int mid = left + (right-1) / 2;
+
+            sort(arr,left,mid);
+            sort(arr, mid+1, right);
+
+            //Merge the sorted halves
+            merge(arr,left,mid,right);
+        }
+    }
+
+    void merge(int arr[], int left, int mid, int right){
+        
+    }
+}
+
+
 
 public class Main {
     public static void main(String[] args) {
