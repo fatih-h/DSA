@@ -174,6 +174,35 @@ class MergeSort{
 
 class QuickSort{
 
+    /*
+    Time Complexity: O(N log(N)) best case and  average case
+    Time Complexity: O(N^2) worst case if we pick the smallest one as pivot
+
+    T(n) = T(k) + T(n-k-1) + θ(n)
+    The first two terms are for two recursive calls, the last term is for the partition process.
+    k is the number of elements that are smaller than the pivot.
+    */
+    int partition(int arr[], int low, int high){
+        //Pivot(pivot as last index)
+        int pivot = arr[high];
+        int i = low-1;
+        for(int j=low; j<=high-1; j++){
+            if(arr[j]<pivot){
+                i++;
+                Main.swap(arr, i, j);
+            }
+        }
+        Main.swap(arr, i+1, high);
+        return(i+1);
+    }
+    void sort(int arr[], int low, int high){
+        if(low < high){
+            int pi = partition(arr, low ,high);
+
+            sort(arr, low, pi-1);
+            sort(arr, pi+1, high);
+        }
+    }
 }
 
 
@@ -217,6 +246,14 @@ public class Main {
         print(array, n);
          */
 
+        /*Quick Sort test case
+        int[] array = new int[]{4,3,12,65,32,6,5,23};
+        int n = array.length;
+        QuickSort qs = new QuickSort();
+        print(array, n);
+        qs.sort(array, 0, n-1);
+        print(array, n);
+        */
 
 
     }
