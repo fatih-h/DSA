@@ -116,9 +116,10 @@ class MergeSort{
     //There are log N levels and in each level, we perform O(N) work
     void sort(int arr[], int left, int right){
         if(left < right){
-            int mid = left + (right-1) / 2;
-
-            sort(arr,left,mid);
+            // Find the middle point
+            int mid = left + (right-left) / 2;
+            // Recursive comes here
+            sort(arr, left, mid);
             sort(arr, mid+1, right);
 
             //Merge the sorted halves
@@ -127,10 +128,53 @@ class MergeSort{
     }
 
     void merge(int arr[], int left, int mid, int right){
-        
+        int n1 = mid-left+1;
+        int n2 = right-mid;
+
+        int leftArr[] = new int[n1];
+        int rightArr[] = new int[n2];
+
+
+        for(int i=0; i<n1; i++){
+            leftArr[i] = arr[left+i];
+        }
+        for(int j=0; j<n2; j++){
+            rightArr[j] = arr[mid+j+1];
+        }
+
+        /* Merge the temp arrays */
+
+        int i=0,j=0;
+        int key = left;
+        while(i<n1 && j<n2){
+            if(leftArr[i] <= rightArr[j]){
+                arr[key] = leftArr[i];
+                i++;
+            }else{
+                arr[key] = rightArr[j];
+                j++;
+            }
+            key++;
+        }
+
+
+        while (i < n1) {
+            arr[key] = leftArr[i];
+            i++;
+            key++;
+        }
+        while (j < n2) {
+            arr[key] = rightArr[j];
+            j++;
+            key++;
+        }
+
     }
 }
 
+class QuickSort{
+
+}
 
 
 public class Main {
@@ -163,6 +207,16 @@ public class Main {
         is.sort(array, n);
         print(array,n);
          */
+
+        /*Merge Sort test case
+        int[] array = new int[]{21,35,89,95,12,45,64,23,1,2,76};
+        int n = array.length;
+        MergeSort ms = new MergeSort();
+        print(array, n);
+        ms.sort(array,0,n-1);
+        print(array, n);
+         */
+
 
 
     }
